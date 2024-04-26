@@ -1,0 +1,19 @@
+{
+    "name": "rahul-godiyal/php-ups-api-wrapper",
+    "description": "API Wrapper for UPS web services",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "RahulGodiyal\\PhpUpsApiWrapper\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rahul Godiyal",
+            "email": "rgodiyal482@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
