@@ -66,7 +66,11 @@ class AddressValidation extends Auth
         $res = json_decode($response);
 
         if (!isset($res->XAVResponse)) {
-            $error = $res->response->errors[0]->message;
+            if (isset($res->response)) {
+                $error = $res->response->errors[0]->message;
+            } else {
+                $error = "Address Validation Failed! Please try again.";
+            }
             return ['status' => 'fail', 'msg' => $error];
         }
 
