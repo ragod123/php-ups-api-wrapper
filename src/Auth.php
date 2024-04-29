@@ -71,9 +71,11 @@ class Auth
     {
         if ($mode === 'PROD') {
             $this->_mode = $mode;
+            return $mode;
         }
 
         $this->_mode = 'DEV';
+        return $mode;
     }
 
     /**

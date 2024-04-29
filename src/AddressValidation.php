@@ -114,4 +114,14 @@ class AddressValidation extends Auth
 
         return $addresses;
     }
+    
+    /**
+     * Set Mode
+     * @param string DEV|PROD
+     */
+    public function setMode(String $mode)
+    {
+        parent::setMode($mode);
+        return $this;
+    }
 }

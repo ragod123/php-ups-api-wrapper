@@ -39,7 +39,8 @@ $address = [
 ];
 
 echo '<pre>';
-print_r(AddressValidation::setAddress($address)->validate($client_id, $client_secret));
+print_r(AddressValidation::setAddress($address)->validate($client_id, $client_secret)); // For Dev Api
+print_r(AddressValidation::setAddress($address)->setMode('PROD')->validate($client_id, $client_secret)); // For Prod Api
 echo '</pre>';
 die();
 
