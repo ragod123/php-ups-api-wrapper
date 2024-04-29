@@ -1,6 +1,6 @@
 {
     "name": "rahul-godiyal/php-ups-api-wrapper",
-    "description": "API Wrapper for UPS web services",
+    "description": "Latest OAuth 2.0 Rest API Wrapper for UPS web services",
     "type": "library",
     "license": "MIT",
     "autoload": {

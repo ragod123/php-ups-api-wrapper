@@ -1,7 +1,7 @@
 
 # RahulGodiyal\PhpUpsApiWrapper
 
-API Wrapper for UPS web services.
+Latest OAuth 2.0 Rest API Wrapper for UPS web services.
 
 
 
