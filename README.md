@@ -11,7 +11,7 @@ API Wrapper for UPS web services.
 Install with composer
 
 ```bash
-  composer install rahul-godiyal/php-ups-api-wrapper
+  composer require rahul-godiyal/php-ups-api-wrapper
 ```
     
 ## Usage/Examples
