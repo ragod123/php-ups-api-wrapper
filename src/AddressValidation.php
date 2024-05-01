@@ -74,6 +74,10 @@ class AddressValidation extends Auth
             return ['status' => 'fail', 'msg' => $error];
         }
 
+        if (!isset($res->XAVResponse->Candidate)) {
+            return ['status' => 'fail', 'msg' => "Invalid Address."];
+        }
+
         $addresses = $this->_getAddresses($res->XAVResponse->Candidate);
         return ['status' => 'success', 'addresses' => $addresses];
     }
