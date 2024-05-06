@@ -3,43 +3,26 @@
 namespace RahulGodiyal\PhpUpsApiWrapper;
 
 use RahulGodiyal\PhpUpsApiWrapper\Auth;
+use RahulGodiyal\PhpUpsApiWrapper\Utils\HttpClient;
 
 class AddressValidation extends Auth
 {
-    private static $_address;
-    private $_request_option;
-    private $_version;
-    private $_query;
+    private const REQUEST_OPTION = "3";
+    private const VERSION = "v2";
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->_request_option = "3";
-        $this->_version = "v2";
-        $this->_query = [
-            "regionalrequestindicator" => "string",
-            "maximumcandidatelistsize" => "1"
-        ];
-    }
+    private static array $address;
+    private array $query = [
+        "regionalrequestindicator" => "string",
+        "maximumcandidatelistsize" => "1"
+    ];
 
-    /**
-     * Set Address to validate
-     * @param array $address
-     * @return self
-     */
-    public static function setAddress(array $address)
+    public static function setAddress(array $address): self
     {
-        self::$_address = $address;
+        self::$address = $address;
         return new self;
     }
 
-    /**
-     * Validate the address
-     * @param string $client_id
-     * @param string $client_secret
-     * @return array of validated address
-     */
-    public function validate(String $client_id, String $client_secret)
+    public function validate(string $client_id, string $client_secret): array
     {
         $auth = $this->authenticate($client_id, $client_secret);
 
@@ -48,23 +31,17 @@ class AddressValidation extends Auth
         }
 
         $access_token = $auth['access_token'];
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_HTTPHEADER => [
-                "Authorization: Bearer $access_token",
-                "Content-Type: application/json"
-            ],
-            CURLOPT_POSTFIELDS => json_encode($this->_payload()),
-            CURLOPT_URL => $this->_getAPIBaseURL() . "/api/addressvalidation/" . $this->_version . "/" . $this->_request_option . "?" . http_build_query($this->_query),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => "POST",
+        
+        $httpClient = new HttpClient();
+        $httpClient->setHeader([
+            "Authorization: Bearer $access_token",
+            "Content-Type: application/json"
         ]);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $res = json_decode($response);
-
+        $httpClient->setPayload(json_encode($this->getPayLoad()));
+        $httpClient->setUrl($this->_getAPIBaseURL() . "/api/addressvalidation/" . self::VERSION . "/" . self::REQUEST_OPTION . "?" . http_build_query($this->query));
+        $httpClient->setMethod("POST");
+        $res = $httpClient->fetch();
+        
         if (!isset($res->XAVResponse)) {
             if (isset($res->response)) {
                 $error = $res->response->errors[0]->message;
@@ -78,29 +55,20 @@ class AddressValidation extends Auth
             return ['status' => 'fail', 'msg' => "Invalid Address."];
         }
 
-        $addresses = $this->_getAddresses($res->XAVResponse->Candidate);
+        $addresses = $this->getAddresses($res->XAVResponse->Candidate);
         return ['status' => 'success', 'addresses' => $addresses];
     }
 
-    /**
-     * Get Payload
-     * @return array $payload
-     */
-    private function _payload()
+    private function getPayLoad(): array
     {
         return [
             "XAVRequest" => [
-                "AddressKeyFormat" => self::$_address
+                "AddressKeyFormat" => self::$address
             ]
         ];
     }
 
-    /**
-     * Get Addresses
-     * @param array of objects
-     * @return array of addresses
-     */
-    private function _getAddresses(Array $candidates)
+    private function getAddresses(array $candidates): array
     {
         $addresses = [];
         foreach ($candidates as $candObj) {
@@ -119,11 +87,7 @@ class AddressValidation extends Auth
         return $addresses;
     }
     
-    /**
-     * Set Mode
-     * @param string DEV|PROD
-     */
-    public function setMode(String $mode)
+    public function setMode(string $mode): self
     {
         parent::setMode($mode);
         return $this;
