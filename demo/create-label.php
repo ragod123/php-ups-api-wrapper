@@ -29,8 +29,10 @@ $client_secret = "*****************************"; // UPS Client Secret
 
 /********* Shipper **********/
 $address = new Address();
-$address->setAddressLine1("address line 1");
-$address->setAddressLine2(""); // optional
+$address->setAddressLines([
+    "address line 1", // address line 1
+    "address line 2" // address line 2 optional
+]);
 $address->setCity("Timonium");
 $address->setStateProvinceCode("MD");
 $address->setPostalCode("21093");
@@ -52,8 +54,7 @@ $shipper->setAddress($address);
 
 /************ ShipTo **********/
 $address = new Address();
-$address->setAddressLine1("address line 1");
-$address->setAddressLine2(""); // optional
+$address->setAddressLines(["address line 1"]);
 $address->setCity("Timonium");
 $address->setStateProvinceCode("MD");
 $address->setPostalCode("21093");
@@ -72,8 +73,7 @@ $shipTo->setResidential(""); // optional
 
 /************ ShipFrom **********/
 $address = new Address();
-$address->setAddressLine1("address line 1");
-$address->setAddressLine2(""); // optional
+$address->setAddressLines(["address line 1"]);
 $address->setCity("Timonium");
 $address->setStateProvinceCode("MD");
 $address->setPostalCode("21093");
