@@ -14,6 +14,7 @@
             "email": "rgodiyal482@gmail.com"
         }
     ],
+    "readme": "readme.md",
     "minimum-stability": "stable",
     "require": {}
 }
