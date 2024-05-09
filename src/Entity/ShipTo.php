@@ -5,11 +5,16 @@ namespace RahulGodiyal\PhpUpsApiWrapper\Entity;
 class ShipTo
 {
     private ?string $name;
-    private ?string $attentionName;
+    private string $attentionName = "";
     private Phone $phone;
     private Address $address;
-    private ?string $residential;
+    private string $residential = "";
 
+    public function __construct()
+    {
+        $this->phone = new Phone();
+    }
+    
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -49,7 +54,7 @@ class ShipTo
         return $this;
     }
 
-    public function getAddress(): Address | null
+    public function getAddress(): Address
     {
         return $this->address;
     }
@@ -76,7 +81,7 @@ class ShipTo
             $shipTo["AttentionName"] = $this->attentionName;
         }
 
-        if ($this->phone) {
+        if ($this->phone->exists()) {
             $shipTo["Phone"] = $this->phone->toArray();
         }
 
