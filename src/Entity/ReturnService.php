@@ -26,7 +26,7 @@ class ReturnService
 
     public function exists()
     {
-        if (!empty($this->code) && !empty($this->code)) {
+        if (!empty($this->code)) {
             return true;
         }
 
