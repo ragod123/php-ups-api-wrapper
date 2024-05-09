@@ -6,7 +6,7 @@ class LabelSpecification
 {
     private LabelImageFormat $labelImageFormat;
     private LabelStockSize $labelStockSize;
-    private ?string $httpUserAgent;
+    private string $httpUserAgent = "";
 
     public function setLabelImageFormat(LabelImageFormat $labelImageFormat): self
     {
