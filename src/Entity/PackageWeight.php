@@ -7,6 +7,15 @@ class PackageWeight
     private UnitOfMeasurement $unitOfMeasurement;
     private ?string $weight;
 
+    public function exists()
+    {
+        if ($this->weight && $this->unitOfMeasurement->exists()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function setUnitOfMeasurement(UnitOfMeasurement $unitOfMeasurement): self
     {
         $this->unitOfMeasurement = $unitOfMeasurement;
