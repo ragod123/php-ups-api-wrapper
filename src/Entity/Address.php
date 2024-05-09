@@ -27,7 +27,7 @@ class Address
         return $this;
     }
 
-    public function getCity(): string | null
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -38,7 +38,7 @@ class Address
         return $this;
     }
 
-    public function getStateProvinceCode(): string | null
+    public function getStateProvinceCode(): string
     {
         return $this->stateProvinceCode;
     }
@@ -49,7 +49,7 @@ class Address
         return $this;
     }
 
-    public function getPostalCode(): string | null
+    public function getPostalCode(): string
     {
         return $this->postalCode;
     }
@@ -60,7 +60,7 @@ class Address
         return $this;
     }
 
-    public function getCountryCode(): string | null
+    public function getCountryCode(): string
     {
         return $this->countryCode;
     }
