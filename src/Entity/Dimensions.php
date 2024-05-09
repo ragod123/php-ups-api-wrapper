@@ -5,9 +5,21 @@ namespace RahulGodiyal\PhpUpsApiWrapper\Entity;
 class Dimensions
 {
     private UnitOfMeasurement $unitOfMeasurement;
-    private ?string $length;
-    private ?string $width;
-    private ?string $height;
+    private string $length = "";
+    private string $width = "";
+    private string $height = "";
+    
+    public function exists()
+    {
+        if (
+            $this->length && $this->width && $this->height
+            && $this->unitOfMeasurement->exists()
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 
     public function setUnitOfMeasurement(UnitOfMeasurement $unitOfMeasurement): self
     {
