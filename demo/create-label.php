@@ -112,7 +112,8 @@ $packaging = new Packaging();
 $packaging->setCode(Packaging::CUSTOMER_SUPPLIED_PACKAGE);
 $packaging->setDescription("Ups Letter"); // optional
 
-$unitOfMeasurement = new UnitOfMeasurement();
+// Dimensions can be optional
+$unitOfMeasurement = new UnitOfMeasurement(); 
 $unitOfMeasurement->setCode(UnitOfMeasurement::INCHES);
 $unitOfMeasurement->setDescription("Inches"); // optional
 
@@ -121,7 +122,9 @@ $dimensions->setUnitOfMeasurement($unitOfMeasurement);
 $dimensions->setLength("10");
 $dimensions->setWidth("30");
 $dimensions->setHeight("45");
+// End Dimensions
 
+// Package Weight can be optional
 $unitOfMeasurement = new UnitOfMeasurement();
 $unitOfMeasurement->setCode(UnitOfMeasurement::POUNDS);
 $unitOfMeasurement->setDescription("POUNDS"); // optional
@@ -129,12 +132,13 @@ $unitOfMeasurement->setDescription("POUNDS"); // optional
 $packageWeight = new PackageWeight();
 $packageWeight->setUnitOfMeasurement($unitOfMeasurement);
 $packageWeight->setWeight("5");
+// End Package Weight
 
 $package = new Package();
 $package->setDescription(""); // optional
 $package->setPackaging($packaging);
-$package->setDimensions($dimensions);
-$package->setPackageWeight($packageWeight);
+$package->setDimensions($dimensions); // optional
+$package->setPackageWeight($packageWeight); // optional
 /************ End Package **********/
 
 /************ Shipment **********/
