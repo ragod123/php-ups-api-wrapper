@@ -36,7 +36,7 @@ class Service
     public const UPS_WORLDWIDE_EXPRESS_FREIGHT = "96";
 
     private ?string $code;
-    private ?string $description;
+    private string $description = "";
 
     public function setCode(string $code): self
     {
