@@ -10,7 +10,7 @@ class LabelImageFormat
     public const SPL = "SPL";
 
     private ?string $code;
-    private ?string $description;
+    private string $description = "";
 
     public function setCode(string $code): self
     {
