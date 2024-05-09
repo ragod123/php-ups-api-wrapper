@@ -4,10 +4,18 @@ namespace RahulGodiyal\PhpUpsApiWrapper\Entity;
 
 class Package
 {
-    private ?string $description;
+    private string $description = "";
     private Packaging $packaging;
     private Dimensions $dimensions;
     private PackageWeight $packageWeight;
+    private ReferenceNumber $referenceNumber;
+    
+    public function __construct()
+    {
+        $this->dimensions = new Dimensions();
+        $this->packageWeight = new PackageWeight();
+        $this->referenceNumber = new ReferenceNumber();
+    }
 
     public function setDescription(string $description): self
     {
@@ -18,6 +26,17 @@ class Package
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function setReferenceNumber(ReferenceNumber $referenceNumber): self
+    {
+        $this->referenceNumber = $referenceNumber;
+        return $this;
+    }
+
+    public function getReferenceNumber(): ReferenceNumber
+    {
+        return $this->referenceNumber;
     }
 
     public function setPackaging(Packaging $packaging): self
@@ -63,12 +82,16 @@ class Package
             $package["Description"] = $this->description;
         }
 
-        if ($this->dimensions) {
+        if ($this->dimensions->exists()) {
             $package["Dimensions"] = $this->dimensions->toArray();
         }
         
-        if ($this->packageWeight) {
+        if ($this->packageWeight->exists()) {
             $package["PackageWeight"] = $this->packageWeight->toArray();
+        }
+        
+        if ($this->referenceNumber->exists()) {
+            $package["ReferenceNumber"] = $this->referenceNumber->toArray();
         }
 
         return $package;
