@@ -4,7 +4,7 @@ namespace RahulGodiyal\PhpUpsApiWrapper\Entity;
 
 class Shipment
 {
-    private ?string $description;
+    private string $description = "";
     private ReturnService $returnService;
     private Shipper $shipper;
     private ShipTo $shipTo;
@@ -15,8 +15,8 @@ class Shipment
 
     public function __construct()
     {
-        $this->returnService = new ReturnService;
-        $this->paymentInformation = new PaymentInformation;
+        $this->returnService = new ReturnService();
+        $this->paymentInformation = new PaymentInformation();
     }
 
     public function setDescription(string $description): self
