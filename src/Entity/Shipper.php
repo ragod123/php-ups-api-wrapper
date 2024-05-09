@@ -5,12 +5,17 @@ namespace RahulGodiyal\PhpUpsApiWrapper\Entity;
 class Shipper
 {
     private ?string $name;
-    private ?string $attentionName;
-    private ?string $taxIdentificationNumber;
+    private string $attentionName = "";
+    private string $taxIdentificationNumber = "";
     private Phone $phone;
     private ?string $shipperNumber;
-    private ?string $faxNumber;
+    private string $faxNumber = "";
     private Address $address;
+
+    public function __construct()
+    {
+        $this->phone = new Phone();
+    }
 
     public function setName(string $name): self
     {
@@ -84,7 +89,7 @@ class Shipper
         return $this;
     }
 
-    public function getAddress(): Address | null
+    public function getAddress(): Address
     {
         return $this->address;
     }
@@ -105,7 +110,7 @@ class Shipper
             $shipper["TaxIdentificationNumber"] = $this->taxIdentificationNumber;
         }
 
-        if ($this->phone) {
+        if ($this->phone->exists()) {
             $shipper["Phone"] = $this->phone->toArray();
         }
 
