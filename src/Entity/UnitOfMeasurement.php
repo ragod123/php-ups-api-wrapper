@@ -13,7 +13,16 @@ class UnitOfMeasurement
     public const OUNCES = "OZS";
 
     private ?string $code;
-    private ?string $description;
+    private string $description = "";
+
+    public function exists()
+    {
+        if ($this->code) {
+            return true;
+        }
+
+        return false;
+    }
 
     public function setCode(string $code): self
     {
