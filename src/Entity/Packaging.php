@@ -29,7 +29,7 @@ class Packaging
     public const STANDARD_FLAT = "67";
 
     private ?string $code;
-    private ?string $description;
+    private string $description = "";
 
     public function setCode(string $code): self
     {
