@@ -7,6 +7,15 @@ class Phone
     private ?string $number;
     private string $extension = "";
 
+    public function exists()
+    {
+        if ($this->number) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function setNumber(string $number): self
     {
         $this->number = $number;
