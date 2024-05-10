@@ -5,7 +5,7 @@ namespace RahulGodiyal\PhpUpsApiWrapper\Utils;
 class HttpClient
 {
     private array $header;
-    private ?string $payload;
+    private string $payload = "";
     private string $url;
     private string $method;
 
@@ -37,14 +37,18 @@ class HttpClient
     {
         try {
             $curl = curl_init();
-
-            curl_setopt_array($curl, [
+            $setopt_array = [
                 CURLOPT_HTTPHEADER => $this->header,
-                CURLOPT_POSTFIELDS => $this->payload,
                 CURLOPT_URL => $this->url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_CUSTOMREQUEST => strtoupper($this->method),
-            ]);
+            ];
+
+            if (!empty($this->payload)) {
+                $setopt_array[CURLOPT_POSTFIELDS] = $this->payload;
+            }
+
+            curl_setopt_array($curl, $setopt_array);
     
             $response = curl_exec($curl);
             curl_close($curl);
