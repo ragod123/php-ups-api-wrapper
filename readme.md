@@ -3,9 +3,24 @@
 
 Latest OAuth 2.0 Rest API Wrapper for UPS web services.
 
+## Table Of Content
 
+1. [Requirements](#requirements)
+2. [Installation](#installation)
+3. [Address Validation](#addressvalidation)
+4. [Create Shipment | Shipping Label](#create-shipment)
+5. [Tracking API](#tracking)
+6. [Documentation](#api-docs)
+7. [License](#license-section)
 
+<a name="requirements"></a>
+## Requirements
 
+This library uses PHP 7.4+.
+
+To integrate with the UPS API using OAuth 2.0 authentication, you'll need to [obtain a Client ID and Client Secret from UPS](https://developer.ups.com). These credentials must be included with each API request you make.
+
+<a name="installation"></a>
 ## Installation
 
 Install with composer
@@ -13,10 +28,9 @@ Install with composer
 ```bash
   composer require rahul-godiyal/php-ups-api-wrapper
 ```
-    
-## Usage/Examples
 
-UPS Address Validation
+<a name="addressvalidation"></a>
+## Address Validation
 ```php
 <?php
 
@@ -46,7 +60,8 @@ die();
 
 ```
 
-Create Shipment | Shipping Label
+<a name="create-shipment"></a>
+## Create Shipment | Shipping Label
 ```php
 <?php
 
@@ -248,7 +263,9 @@ echo '<pre>'; print_r($shipRes); echo '</pre>';
 </html>
 
 ```
-Tracking API
+
+<a name="tracking"></a>
+## Tracking API
 ```php
 <?php
 
@@ -268,3 +285,12 @@ echo '</pre>';
 die();
 ```
 
+<a name="api-docs"></a>
+## Documentation
+[UPS API docs](https://developer.ups.com/catalog)
+
+
+<a name="license-section"></a>
+## License
+
+PHP UPS API is licensed under [The MIT License (MIT)](LICENSE).
