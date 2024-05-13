@@ -18,6 +18,7 @@ use RahulGodiyal\PhpUpsApiWrapper\Entity\Shipment;
 use RahulGodiyal\PhpUpsApiWrapper\Entity\ShipmentCharge;
 use RahulGodiyal\PhpUpsApiWrapper\Entity\ShipmentRequest;
 use RahulGodiyal\PhpUpsApiWrapper\Entity\Shipper;
+use RahulGodiyal\PhpUpsApiWrapper\Entity\ShipQuery;
 use RahulGodiyal\PhpUpsApiWrapper\Entity\ShipTo;
 use RahulGodiyal\PhpUpsApiWrapper\Entity\UnitOfMeasurement;
 use RahulGodiyal\PhpUpsApiWrapper\Ship;
@@ -174,8 +175,14 @@ $shipmentRequest->setShipment($shipment);
 $shipmentRequest->setLabelSpecification($labelSpecification);
 /************ End Shipment Request **********/
 
+/************ Query **********/
+$query = new ShipQuery(); // optional
+$query->setAdditionalAddressValidation("city"); // optional
+/************ End Query **********/
+
 /************ Create Ship **********/
 $ship = new Ship();
+$ship->setQuery($query); // optional
 $ship->setShipmentRequest($shipmentRequest);
 $ship->setOnlyLabel(true); // optional
 // $ship->setMode('PROD'); // Optional | only used for prod
