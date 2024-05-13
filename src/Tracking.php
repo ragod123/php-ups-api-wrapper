@@ -3,22 +3,29 @@
 namespace RahulGodiyal\PhpUpsApiWrapper;
 
 use RahulGodiyal\PhpUpsApiWrapper\Auth;
+use RahulGodiyal\PhpUpsApiWrapper\Entity\TrackingQuery;
 use RahulGodiyal\PhpUpsApiWrapper\Utils\HttpClient;
 
 class Tracking extends Auth
 {
-    private const QUERY = [
-        "locale" => "en_US",
-        "returnSignature" => "false",
-        "returnMilestones" => "false",
-        "returnPOD" => "false"
-    ];
-    private static ?string $trackingNumber;
+    private TrackingQuery $query;
+    private ?string $trackingNumber;
 
-    public static function setTrackingNumber(string $trackingNumber): self
+    public function __construct()
     {
-        self::$trackingNumber = $trackingNumber;
-        return new self;
+        $this->query = new TrackingQuery();
+    }
+
+    public function setQuery(TrackingQuery $query): self
+    {
+        $this->query = $query;
+        return $this;
+    }
+
+    public function setTrackingNumber(string $trackingNumber): self
+    {
+        $this->trackingNumber = $trackingNumber;
+        return $this;
     }
 
     public function fetch(string $client_id, string $client_secret): array
@@ -31,13 +38,18 @@ class Tracking extends Auth
 
         $access_token = $auth['access_token'];
 
+        $queryParams = "";
+        if ($this->query->exists()) {
+            $queryParams = "?" . http_build_query($this->query->toArray());
+        }
+
         $httpClient = new HttpClient();
         $httpClient->setHeader([
             "Authorization: Bearer $access_token",
             "transId: string",
             "transactionSrc: testing"
         ]);
-        $httpClient->setUrl($this->_getAPIBaseURL() . "/api/track/v1/details/" . self::$trackingNumber . "?" . http_build_query(self::QUERY));
+        $httpClient->setUrl($this->_getAPIBaseURL() . "/api/track/v1/details/" . $this->trackingNumber . $queryParams);
         $httpClient->setMethod("GET");
         $res = $httpClient->fetch();
 
@@ -64,7 +76,7 @@ class Tracking extends Auth
         $trackingDetails = $res->trackResponse->shipment;
         return ['status' => 'success', 'data' => $trackingDetails];
     }
-    
+
     public function setMode(string $mode): self
     {
         parent::setMode($mode);

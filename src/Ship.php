@@ -3,7 +3,7 @@
 namespace RahulGodiyal\PhpUpsApiWrapper;
 
 use RahulGodiyal\PhpUpsApiWrapper\Auth;
-use RahulGodiyal\PhpUpsApiWrapper\Entity\Query;
+use RahulGodiyal\PhpUpsApiWrapper\Entity\ShipQuery;
 use RahulGodiyal\PhpUpsApiWrapper\Entity\ShipmentRequest;
 use RahulGodiyal\PhpUpsApiWrapper\Utils\HttpClient;
 
@@ -11,23 +11,23 @@ class Ship extends Auth
 {
     private const VERSION = "v2403";
 
-    private Query $query;
+    private ShipQuery $query;
     private ShipmentRequest $shipmentRequest;
     private bool $onlyLabel;
 
     public function __construct()
     {
-        $this->query = new Query();
+        $this->query = new ShipQuery();
         $this->onlyLabel = false;
     }
 
-    public function setQuery(Query $query): self
+    public function setQuery(ShipQuery $query): self
     {
         $this->query = $query;
         return $this;
     }
 
-    public function getQuery(): Query
+    public function getQuery(): ShipQuery
     {
         return $this->query;
     }
@@ -53,6 +53,11 @@ class Ship extends Auth
 
         $access_token = $auth['access_token'];
 
+        $queryParams = "";
+        if ($this->query->exists()) {
+            $queryParams = "?" . http_build_query($this->query->toArray());
+        }
+
         $httpClient = new HttpClient();
         $httpClient->setHeader([
             "Authorization: Bearer $access_token",
@@ -61,7 +66,7 @@ class Ship extends Auth
             "transactionSrc: testing"
         ]);
         $httpClient->setPayload(json_encode($this->getPayload()));
-        $httpClient->setUrl($this->_getAPIBaseURL() . "/api/shipments/" . self::VERSION . "/ship?" . http_build_query($this->query->toArray()));
+        $httpClient->setUrl($this->_getAPIBaseURL() . "/api/shipments/" . self::VERSION . "/ship" . $queryParams);
         $httpClient->setMethod("POST");
         $res = $httpClient->fetch();
 
