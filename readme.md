@@ -34,30 +34,40 @@ Install with composer
 ```php
 <?php
 
-use RahulGodiyal\PhpUpsApiWrapper\AddressValidation;
+use RahulGodiyal\PhpUpsApiWrapper\Entity\ValidateAddressQuery;
+use RahulGodiyal\PhpUpsApiWrapper\ValidateAddress;
 
 require_once('./vendor/autoload.php');
 
-$client_id = "xxxxxxxxxxxxxxxx"; // UPS Client ID
-$client_secret = "xxxxxxxxxxxxxxx"; // UPS Client Secret
+$client_id = "******************************"; // UPS Client ID
+$client_secret = "*****************************************"; // UPS Client Secret
 
-// Address to be validated
-$address = [
-    "AddressLine" => [
-        "785 GODDARD CT"
-    ],
-    "PoliticalDivision2" => "ALPHARATTA",
-    "PoliticalDivision1" => "CA",
-    "PostcodePrimaryLow" => "30005",
-    "CountryCode" => "US"
-];
+
+/********* Query *********/
+$query = new ValidateAddressQuery(); // optional
+$query->setRegionalRequestIndicator("False"); // optional
+$query->setMaximumCandidateListSize("1"); //optional
+/********* End Query *********/
+
+/******** Set Address ********/
+$validateAddress = new ValidateAddress();
+$validateAddress->setQuery($query); // optional
+$validateAddress->setAddressLines([
+    "8001 S Orange Blossom Trl", // address line 1
+    "SPACE K113iokio" // address line 2
+]);
+$validateAddress->setPoliticalDivision2("Orlando"); // City
+$validateAddress->setPoliticalDivision1("FL"); // State Code
+$validateAddress->setPostcodePrimaryLow("32809"); // Postal Code
+$validateAddress->setCountryCode("US");
+/******** End Set Address ********/
+
+$validateAddress->setMode('PROD'); // optional
 
 echo '<pre>';
-print_r(AddressValidation::setAddress($address)->validate($client_id, $client_secret)); // For Dev Api
-print_r(AddressValidation::setAddress($address)->setMode('PROD')->validate($client_id, $client_secret)); // For Prod Api
+print_r($validateAddress->validate($client_id, $client_secret));
 echo '</pre>';
 die();
-
 ```
 
 <a name="create-shipment"></a>
@@ -269,20 +279,29 @@ echo '<pre>'; print_r($shipRes); echo '</pre>';
 ```php
 <?php
 
+use RahulGodiyal\PhpUpsApiWrapper\Entity\TrackingQuery;
 use RahulGodiyal\PhpUpsApiWrapper\Tracking;
 
 require_once('./vendor/autoload.php');
 
-$client_id = "xxxxxxxxxxxxxxxx"; // UPS Client ID
-$client_secret = "xxxxxxxxxxxxxxx"; // UPS Client Secret
+$client_id = "******************************"; // UPS Client ID
+$client_secret = "*****************************************"; // UPS Client Secret
 
-$trackingRes = Tracking::setTrackingNumber("123456789")->fetch($client_id, $client_secret); // For Dev Api
-$trackingRes = Tracking::setTrackingNumber("123456789")->setMode('PROD')->fetch($client_id, $client_secret); // For PROD Api
+/********* Tracking Query *********/
+$query = new TrackingQuery(); // optional
+$query->setLocale("en_US"); // optional
+$query->setReturnSignature("false"); //optional
+$query->setReturnSignature("false"); //optional
+$query->setReturnSignature("false"); //optional
+/********* End Tracking Query *********/
 
-echo '<pre>';
-print_r($trackingRes);
-echo '</pre>';
-die();
+$tracking = new Tracking();
+$trackingRes = $tracking
+    ->setQuery($query) // optional
+    // ->setMode('PROD') // optional
+    ->setTrackingNumber("123456789")->fetch($client_id, $client_secret);
+
+echo '<pre>'; print_r($trackingRes); echo '</pre>'; die();
 ```
 
 <a name="api-docs"></a>
