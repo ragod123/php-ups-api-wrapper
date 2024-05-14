@@ -14,6 +14,7 @@ class Ship extends Auth
     private ShipQuery $query;
     private ShipmentRequest $shipmentRequest;
     private bool $onlyLabel;
+    private object $apiResponse;
 
     public function __construct()
     {
@@ -65,10 +66,10 @@ class Ship extends Auth
             "transId: string",
             "transactionSrc: testing"
         ]);
-        $httpClient->setPayload(json_encode($this->getPayload()));
+        $httpClient->setPayload($this->getRequest());
         $httpClient->setUrl($this->_getAPIBaseURL() . "/api/shipments/" . self::VERSION . "/ship" . $queryParams);
         $httpClient->setMethod("POST");
-        $res = $httpClient->fetch();
+        $this->apiResponse = $res = $httpClient->fetch();
 
         if (!isset($res->ShipmentResponse)) {
             if (isset($res->response)) {
@@ -101,13 +102,6 @@ class Ship extends Auth
         return ['status' => 'success', 'data' => $res];
     }
 
-    private function getPayload(): array
-    {
-        return [
-            "ShipmentRequest" => $this->shipmentRequest->toArray()
-        ];
-    }
-
     public function setMode(string $mode): self
     {
         parent::setMode($mode);
@@ -118,5 +112,17 @@ class Ship extends Auth
     {
         $this->onlyLabel = $onlyLabel;
         return $this;
+    }
+
+    public function getRequest(): string
+    {
+        return json_encode([
+            "ShipmentRequest" => $this->shipmentRequest->toArray()
+        ]);
+    }
+
+    public function getResponse(): string
+    {
+        return json_encode($this->apiResponse);
     }
 }
