@@ -10,6 +10,7 @@ class Tracking extends Auth
 {
     private TrackingQuery $query;
     private ?string $trackingNumber;
+    private object $apiResponse;
 
     public function __construct()
     {
@@ -51,7 +52,7 @@ class Tracking extends Auth
         ]);
         $httpClient->setUrl($this->_getAPIBaseURL() . "/api/track/v1/details/" . $this->trackingNumber . $queryParams);
         $httpClient->setMethod("GET");
-        $res = $httpClient->fetch();
+        $this->apiResponse = $res = $httpClient->fetch();
 
         if (!isset($res->trackResponse)) {
             if (isset($res->response)) {
@@ -81,5 +82,10 @@ class Tracking extends Auth
     {
         parent::setMode($mode);
         return $this;
+    }
+
+    public function getResponse(): string
+    {
+        return json_encode($this->apiResponse);
     }
 }
