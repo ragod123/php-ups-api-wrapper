@@ -17,6 +17,7 @@ class ValidateAddress extends Auth
     private ?string $politicalDivision1;
     private ?string $postcodePrimaryLow;
     private ?string $countryCode;
+    private object $apiResponse;
 
     public function __construct()
     {
@@ -79,11 +80,11 @@ class ValidateAddress extends Auth
             "Authorization: Bearer $access_token",
             "Content-Type: application/json"
         ]);
-        $httpClient->setPayload(json_encode($this->getPayLoad()));
+        $httpClient->setPayload($this->getRequest());
         $httpClient->setUrl($this->_getAPIBaseURL() . "/api/addressvalidation/" . self::VERSION . "/" . self::REQUEST_OPTION . $queryParams);
         $httpClient->setMethod("POST");
-        $res = $httpClient->fetch();
-
+        $this->apiResponse = $res = $httpClient->fetch();
+        
         if (!isset($res->XAVResponse)) {
             if (isset($res->response)) {
                 $error = $res->response->errors[0]->message;
@@ -98,12 +99,18 @@ class ValidateAddress extends Auth
         }
 
         $addresses = $this->getAddresses($res->XAVResponse->Candidate);
-        return ['status' => 'success', 'addresses' => $addresses];
+
+        $return_res = ['status' => 'success', 'addresses' => $addresses];
+        if (isset($res->XAVResponse->AddressClassification)) {
+            $return_res['address_classification'] = $res->XAVResponse->AddressClassification;
+        }
+
+        return $return_res;
     }
 
-    private function getPayLoad(): array
+    public function getRequest(): string
     {
-        return [
+        return json_encode([
             "XAVRequest" => [
                 "AddressKeyFormat" => [
                     "AddressLine" => $this->addressLines,
@@ -113,7 +120,7 @@ class ValidateAddress extends Auth
                     "CountryCode" => $this->countryCode
                 ]
             ]
-        ];
+        ]);
     }
 
     private function getAddresses(array $candidates): array
@@ -129,6 +136,7 @@ class ValidateAddress extends Auth
                 'region' => $addressObj->Region,
                 'country' => $addressObj->CountryCode
             ];
+            $address['address_classification'] = $candObj->AddressClassification;
             array_push($addresses, $address);
         }
 
@@ -139,5 +147,10 @@ class ValidateAddress extends Auth
     {
         parent::setMode($mode);
         return $this;
+    }
+    
+    public function getResponse(): string
+    {
+        return json_encode($this->apiResponse);
     }
 }
