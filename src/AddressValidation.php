@@ -56,7 +56,13 @@ class AddressValidation extends Auth
         }
 
         $addresses = $this->getAddresses($res->XAVResponse->Candidate);
-        return ['status' => 'success', 'addresses' => $addresses];
+        
+        $return_res = ['status' => 'success', 'addresses' => $addresses];
+        if (isset($res->XAVResponse->AddressClassification)) {
+            $return_res['address_classification'] = $res->XAVResponse->AddressClassification;
+        }
+
+        return $return_res;
     }
 
     private function getPayLoad(): array
