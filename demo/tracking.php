@@ -12,8 +12,8 @@ $client_secret = "*****************************************"; // UPS Client Secr
 $query = new TrackingQuery(); // optional
 $query->setLocale("en_US"); // optional
 $query->setReturnSignature("false"); //optional
-$query->setReturnSignature("false"); //optional
-$query->setReturnSignature("false"); //optional
+$query->setReturnMilestones("false"); //optional
+$query->setReturnPOD("false"); //optional
 /********* End Tracking Query *********/
 
 $tracking = new Tracking();
